@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 import re
 
 #보유주식종목
-my_list = ['INTC', 'AMD']
+my_list = ['INTC', 'AMD', 'VMW']
+
 
 #현재 주식 가격 가져오기
 for stock in my_list:
@@ -22,5 +23,3 @@ for stock in my_list:
 
     text=re.sub('<.+?>','',text, 0).strip()
     print(stock+' : '+ text)
-
-
