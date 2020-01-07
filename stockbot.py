@@ -1,25 +1,52 @@
 print ("HelloWorld")
+# app.py
+from flask import Flask, request, jsonify
+app = Flask(__name__)
 
-import requests
-from bs4 import BeautifulSoup
-import re
+@app.route('/getmsg/', methods=['GET'])
+def respond():
+    # Retrieve the name from url parameter
+    name = request.args.get("name", None)
 
-#보유주식종목
-my_list = ['INTC', 'AMD', 'VMW']
+    # For debugging
+    print(f"got name {name}")
 
+    response = {}
 
-#현재 주식 가격 가져오기
-for stock in my_list:
-    
-    currentPrice_URL="https://finance.yahoo.com/quote/{}".format(stock)
+    # Check if user sent a name at all
+    if not name:
+        response["ERROR"] = "no name found, please send a name."
+    # Check if the user entered a number not a name
+    elif str(name).isdigit():
+        response["ERROR"] = "name can't be numeric."
+    # Now the user entered a valid name
+    else:
+        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
 
-    req = requests.get(currentPrice_URL)
-    html = req.text
+    # Return the response in json format
+    return jsonify(response)
 
-    soup = BeautifulSoup(html,'html.parser', from_encoding='utf-8')
-    text = soup.find('span',{'class':'Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)'})
+@app.route('/post/', methods=['POST'])
+def post_something():
+    param = request.form.get('name')
+    print(param)
+    # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
+    if param:
+        return jsonify({
+            "Message": f"Welcome {name} to our awesome platform!!",
+            # Add this option to distinct the POST request
+            "METHOD" : "POST"
+        })
+    else:
+        return jsonify({
+            "ERROR": "no name found, please send a name."
+        })
 
-    text = str(text)
+# A welcome message to test our server
+@app.route('/')
+def index():
+    return "<h1>Welcome to our server !!</h1>"
 
-    text=re.sub('<.+?>','',text, 0).strip()
-    print(stock+' : '+ text)
+if __name__ == '__main__':
+    # Threaded option to enable multiple instances for multiple user access support
+    app.run(threaded=True, port=5000)
