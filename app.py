@@ -1,4 +1,4 @@
-print ("HelloWorld")
+print ('HelloWorld')
 
 # app.py
 from flask import Flask, request, jsonify
@@ -10,7 +10,7 @@ def respond():
     name = request.args.get("name", None)
 
     # For debugging
-    print(f"got name {name}")
+    print(f'got name {name}')
 
     response = {}
 
