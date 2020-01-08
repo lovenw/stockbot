@@ -1,8 +1,36 @@
-print ('HelloWorld')
 
-# app.py
 from flask import Flask, request, jsonify
+import requests
+from bs4 import BeautifulSoup
+import re
+
 app = Flask(__name__)
+
+std = ''
+
+# print(std)
+
+
+
+def stock_price(std) :
+    currentPrice_URL="https://finance.yahoo.com/quote/"+std
+#    print(currentPrice_URL)
+
+    req = requests.get(currentPrice_URL)
+    html = req.text
+
+    soup = BeautifulSoup(html, 'html.parser')#, from_encoding='utf-8')
+    text = soup.find('span',{'class':'Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)'})
+
+    text = str(text)
+
+    text=re.sub('<.+?>','',text, 0).strip()
+#    print(std+' : '+ text)
+
+    return text
+
+
+print('hello')
 
 @app.route('/getmsg/', methods=['GET'])
 def respond():
@@ -10,7 +38,10 @@ def respond():
     name = request.args.get("name", None)
 
     # For debugging
-    print(f'got name {name}')
+    # print(f'got name {name}')
+
+
+    price = stock_price(name)
 
     response = {}
 
@@ -22,7 +53,7 @@ def respond():
         response["ERROR"] = "name can't be numeric."
     # Now the user entered a valid name
     else:
-        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
+        response["MESSAGE"] = f"{name} price : {price}"
 
     # Return the response in json format
     return jsonify(response)
