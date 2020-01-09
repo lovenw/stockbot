@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-token  = "xoxb-891410806117-888411335875-REO7NWBuG7QafNphfxRhlSvf"
+token  = "xoxb-891410806117-888411335875-48NSDtf0Flon6gIwLcQ1Lkos"
 slack = Slacker(token)
 
 app = Flask(__name__)
