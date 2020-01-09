@@ -8,16 +8,67 @@ import re
 tokenf = 'xoxb-891410806117-888411335875-'
 tokenb = '2wHNq3Mjh1IBF5IUiiUWwZ7c'
 
-token = tokenf+tokenb
+slack_token = tokenf+tokenb
 
 
-slack = Slacker(token)
+slack = Slacker(slack_token)
 
 app = Flask(__name__)
 
 std = ''
 
 # print(std)
+
+
+slack = Slacker(slack_token)
+
+import os
+from slack import RTMClient
+
+@RTMClient.run_on(event="message")
+def say_hello(**payload):
+  data = payload['data']
+  web_client = payload['web_client']
+
+  if 'Hello' in data['text']:
+    channel_id = data['channel']
+    thread_ts = data['ts']
+    user = data['user']
+
+    web_client.chat_postMessage(
+      channel=channel_id,
+      text=f"Hi <@{user}>!",
+      thread_ts=thread_ts
+    )
+
+rtm_client = RTMClient(token=slack_token)
+rtm_client.start()
+
+
+
+
+
+def stock_price(std) :
+    currentPrice_URL="https://finance.yahoo.com/quote/"+std
+#    print(currentPrice_URL)
+
+    req = requests.get(currentPrice_URL)
+    html = req.text
+
+    soup = BeautifulSoup(html, 'html.parser')#, from_encoding='utf-8')
+    text = soup.find('span',{'class':'Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)'})
+
+    text = str(text)
+
+    text=re.sub('<.+?>','',text, 0).strip()
+#    print(std+' : '+ text)
+
+    return text
+
+
+print('hello')
+
+'''
 
 def get_answer():
 
@@ -52,52 +103,7 @@ def hears():
 
 
 
-import os
-from slack import RTMClient
 
-@RTMClient.run_on(event="message")
-def say_hello(**payload):
-  data = payload['data']
-  web_client = payload['web_client']
-
-  if 'Hello' in data['text']:
-    channel_id = data['channel']
-    thread_ts = data['ts']
-    user = data['user']
-
-    web_client.chat_postMessage(
-      channel=channel_id,
-      text=f"Hi <@{user}>!",
-      thread_ts=thread_ts
-    )
-
-slack_token = tokenf+tokenb
-rtm_client = RTMClient(token=slack_token)
-rtm_client.start()
-
-
-
-def stock_price(std) :
-    currentPrice_URL="https://finance.yahoo.com/quote/"+std
-#    print(currentPrice_URL)
-
-    req = requests.get(currentPrice_URL)
-    html = req.text
-
-    soup = BeautifulSoup(html, 'html.parser')#, from_encoding='utf-8')
-    text = soup.find('span',{'class':'Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)'})
-
-    text = str(text)
-
-    text=re.sub('<.+?>','',text, 0).strip()
-#    print(std+' : '+ text)
-
-    return text
-
-
-print('hello')
-
-'''
 @app.route('/getmsg/', methods=['GET'])
 def respond():
     # Retrieve the name from url parameter
