@@ -69,11 +69,11 @@ def event_handler(event_type, slack_event):
         user = slack_event["authed_users"]
         user2 = slack_event["event"]["user"]
         answer = receivedText.replace("@","")
-        answer2 = answer.replace(user,"")
+        answer2 = answer.replace(user[0],"")
 
         slack.chat.post_message(channel, answer)
         slack.chat.post_message(channel, answer2)
-        slack.chat.post_message(channel, user)
+        slack.chat.post_message(channel, user[0])
         slack.chat.post_message(channel, user2)
         
         
