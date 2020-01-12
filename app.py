@@ -9,44 +9,13 @@ tokenf = 'xoxb-891410806117-888411335875-'
 tokenb = '2wHNq3Mjh1IBF5IUiiUWwZ7c'
 
 slack_token = tokenf+tokenb
-
-
 slack = Slacker(slack_token)
 
 app = Flask(__name__)
 
 std = ''
 
-# print(std)
-
-
 slack = Slacker(slack_token)
-
-'''
-
-import os
-from slack import RTMClient
-
-@RTMClient.run_on(event="message")
-def say_hello(**payload):
-  data = payload['data']
-  web_client = payload['web_client']
-
-  if 'Hello' in data['text']:
-    channel_id = data['channel']
-    thread_ts = data['ts']
-    user = data['user']
-
-    web_client.chat_postMessage(
-      channel=channel_id,
-      text=f"Hi <@{user}>!",
-      thread_ts=thread_ts
-    )
-
-rtm_client = RTMClient(token=slack_token)
-rtm_client.start()
-
-'''
 
 
 
@@ -62,10 +31,10 @@ def stock_price(std) :
 
     text = str(text)
 
-    text=re.sub('<.+?>','',text, 0).strip()
-    print(std+' : '+ text)
+    price=re.sub('<.+?>','',text, 0).strip()
+    print(std+' : '+ price)
 
-    return text
+    return price
 
 
 print('hello')
@@ -83,8 +52,10 @@ def event_handler(event_type, slack_event):
 
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
-        receivedText = slack_event["event"]["text"]
-        answer = receivedText.replace("@"+slack_event["event"]["user"],"")+get_answer()
+        receivedText = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
+        # answer = receivedText.replace("@"+slack_event["event"]["user"],"")+get_answer()
+        answer = receivedText + " : " +stock_price(receivedText)
+
         slack.chat.post_message(channel, answer)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
