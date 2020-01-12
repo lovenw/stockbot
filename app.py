@@ -65,7 +65,7 @@ def event_handler(event_type, slack_event):
 
         channel = slack_event["event"]["channel"]
         receivedText = slack_event["event"]["text"]
-        answer = receivedText.replace("@"+slack_event["event"]["user"],"")+get_answer("TRYU")
+        answer = receivedText.replace("@","")
         slack.chat.post_message(channel, answer)
         
 
