@@ -76,7 +76,7 @@ def get_answer():
 
     return "안녕하세요."
 
-    
+    '''
 # 이벤트 핸들하는 함수
 
 def event_handler(event_type, slack_event):
@@ -102,7 +102,7 @@ def hears():
         event_type = slack_event["event"]["type"]
         return event_handler(event_type, slack_event)
     return make_response("슬랙 요청에 이벤트가 없습니다.", 404, {"X-Slack-No-Retry": 1})
-
+'''
 
 
 
