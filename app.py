@@ -15,6 +15,7 @@ app = Flask(__name__)
 
 std = ''
 name = ''
+price = ''
 
 slack = Slacker(slack_token)
 
