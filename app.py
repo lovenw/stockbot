@@ -66,8 +66,9 @@ def event_handler(event_type, slack_event):
         channel = slack_event["event"]["channel"]
         receivedText = slack_event["event"]["text"]
         answer = receivedText.replace("@","")
-        answer = answer.replace["event"]["user"]
+        answer = answer.replace(slack_event["event"]["user"])
         slack.chat.post_message(channel, answer+answer)
+        
         
 
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
