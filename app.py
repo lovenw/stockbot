@@ -52,9 +52,10 @@ def event_handler(event_type, slack_event):
 
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
-        receivedText = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
+        received_text = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
         # answer = receivedText.replace("@"+slack_event["event"]["user"],"")+get_answer()
-        answer = receivedText + " : " +stock_price(receivedText)
+        eventprice = stock_price(received_text)
+        answer = received_text + " : " +eventprice + stock_price(AMD) + stock_price(received_text)
 
         slack.chat.post_message(channel, answer)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
