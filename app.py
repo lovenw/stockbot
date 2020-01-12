@@ -84,7 +84,7 @@ def event_handler(event_type, slack_event):
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
         receivedText = slack_event["event"]["text"]
-        answer = receivedText.replace("@","")+get_answer()
+        answer = receivedText.replace("@"+slack_event["event"]["user"],"")+get_answer()
         slack.chat.post_message(channel, answer)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
