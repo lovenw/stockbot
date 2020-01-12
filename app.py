@@ -16,6 +16,7 @@ app = Flask(__name__)
 std = ''
 name = ''
 price = ''
+testtext = ''
 
 slack = Slacker(slack_token)
 
@@ -51,9 +52,9 @@ print(test)
 
 '''
 
-def get_answer():
+def get_answer(testtext):
 
-    return "안녕하세요."
+    return "안녕하세요."+testtext
 
 
 # 이벤트 핸들하는 함수
@@ -63,7 +64,7 @@ def event_handler(event_type, slack_event):
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
         received_text = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
-        answer = received_text+get_answer()
+        answer = received_text+get_answer(received_text)
         slack.chat.post_message(channel, answer)
 
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
