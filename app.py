@@ -14,6 +14,7 @@ slack = Slacker(slack_token)
 app = Flask(__name__)
 
 std = ''
+name = ''
 
 slack = Slacker(slack_token)
 
@@ -22,6 +23,7 @@ slack = Slacker(slack_token)
 def stock_price(std) :
     currentPrice_URL="https://finance.yahoo.com/quote/"+std
 #    print(currentPrice_URL)
+    std = str(std)
 
     req = requests.get(currentPrice_URL)
     html = req.text
@@ -32,12 +34,18 @@ def stock_price(std) :
     text = str(text)
 
     price=re.sub('<.+?>','',text, 0).strip()
-    print(std+' : '+ price)
+    # print(std+' : '+ price)
 
     return price
 
 
 print('hello')
+
+print(stock_price("AMD"))
+
+test = stock_price("TSLA")
+
+print(test)
 
 
 
@@ -53,8 +61,9 @@ def event_handler(event_type, slack_event):
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
         received_text = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
-        answer = received_text+get_answer()
+        answer = received_text+get_answer()+stock_price("AMD")
         slack.chat.post_message(channel, answer)
+        slack.chat.post_message(channel, stock_price("AMD"))
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
     return make_response(message, 200, {"X-Slack-No-Retry": 1})
