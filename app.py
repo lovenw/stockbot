@@ -63,8 +63,9 @@ def event_handler(event_type, slack_event):
 
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
-        received_text = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
-        answer = received_text+get_answer(received_text)
+        received_text = slack_event["event"]["text"]#.replace("@"+slack_event["event"]["user"],"")
+        rtext = received_text.replace("@"+slack_event["event"]["user"],"")
+        answer = received_text+get_answer(received_text)+rtext
         slack.chat.post_message(channel, answer)
 
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
