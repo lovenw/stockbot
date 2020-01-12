@@ -17,6 +17,7 @@ std = ''
 name = ''
 price = ''
 testtext = ''
+user = ''
 
 slack = Slacker(slack_token)
 
@@ -66,8 +67,11 @@ def event_handler(event_type, slack_event):
         channel = slack_event["event"]["channel"]
         receivedText = slack_event["event"]["text"]
         user = slack_event["event"]["user"]
-        answer = receivedText.replace("@"+user,"")
+        answer = receivedText.replace("@","")
+        answer2 = answer.replace(user,"")
         slack.chat.post_message(channel, answer)
+        slack.chat.post_message(channel, answer2)
+        slack.chat.post_message(channel, user)
         
         
 
