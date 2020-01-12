@@ -54,9 +54,7 @@ def event_handler(event_type, slack_event):
         channel = slack_event["event"]["channel"]
         received_text = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
         answer = received_text+get_answer()
-        testvalue = stock_price(AMD)
         slack.chat.post_message(channel, answer)
-        slack.chat.post_message(channel, testvalue)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
     return make_response(message, 200, {"X-Slack-No-Retry": 1})
