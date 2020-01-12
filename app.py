@@ -67,18 +67,12 @@ def event_handler(event_type, slack_event):
         channel = slack_event["event"]["channel"]
         receivedText = slack_event["event"]["text"]
         user = slack_event["authed_users"]
-        #user2 = slack_event["event"]["user"]
         answer = receivedText.replace("@","")
         answer2 = answer.replace("<"+user[0]+">","")
         answer3 = answer2.replace(" ","")
 
-        slack.chat.post_message(channel, answer)
-        slack.chat.post_message(channel, answer2)
-        slack.chat.post_message(channel, answer3)
+        slack.chat.post_message(channel, answer+" : "+answer3)
         slack.chat.post_message(channel, stock_price(answer3))
-        
-        
-        
 
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
