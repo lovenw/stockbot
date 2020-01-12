@@ -22,6 +22,8 @@ std = ''
 
 slack = Slacker(slack_token)
 
+'''
+
 import os
 from slack import RTMClient
 
@@ -44,7 +46,7 @@ def say_hello(**payload):
 rtm_client = RTMClient(token=slack_token)
 rtm_client.start()
 
-
+'''
 
 
 
@@ -61,14 +63,14 @@ def stock_price(std) :
     text = str(text)
 
     text=re.sub('<.+?>','',text, 0).strip()
-#    print(std+' : '+ text)
+    print(std+' : '+ text)
 
     return text
 
 
 print('hello')
 
-'''
+
 
 def get_answer():
 
@@ -81,7 +83,7 @@ def event_handler(event_type, slack_event):
 
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
-        text = get_answer()
+        text = slack_event["event"]["text"]+get_answer()
         slack.chat.post_message(channel, text)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
@@ -145,7 +147,7 @@ def post_something():
         return jsonify({
             "ERROR": "no name found, please send a name."
         })
-'''
+
 
 # A welcome message to test our server
 @app.route('/')
