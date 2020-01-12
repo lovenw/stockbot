@@ -22,8 +22,9 @@ slack = Slacker(slack_token)
 
 
 def stock_price(std) :
+
     currentPrice_URL="https://finance.yahoo.com/quote/"+std
-#    print(currentPrice_URL)
+    print(currentPrice_URL)
     std = str(std)
 
     req = requests.get(currentPrice_URL)
