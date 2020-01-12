@@ -61,7 +61,8 @@ def event_handler(event_type, slack_event):
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
         received_text = slack_event["event"]["text"].replace("@"+slack_event["event"]["user"],"")
-        stprice = stock_price(received_text)
+        rtext = str(received_text)
+        stprice = stock_price(rtext)
         answer = received_text+get_answer()+stprice
         slack.chat.post_message(channel, answer)
         slack.chat.post_message(channel, stprice)
