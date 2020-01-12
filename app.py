@@ -76,15 +76,16 @@ def get_answer():
 
     return "안녕하세요."
 
-    '''
+
 # 이벤트 핸들하는 함수
 
 def event_handler(event_type, slack_event):
 
     if event_type == "app_mention":
         channel = slack_event["event"]["channel"]
-        text = slack_event["event"]["text"]+get_answer()
-        slack.chat.post_message(channel, text)
+        receivedText = slack_event["event"]["text"]
+        answer = receivedText.replace("@","")+get_answer()
+        slack.chat.post_message(channel, answer)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
     message = "[%s] 이벤트 핸들러를 찾을 수 없습니다." % event_type
     return make_response(message, 200, {"X-Slack-No-Retry": 1})
@@ -102,7 +103,7 @@ def hears():
         event_type = slack_event["event"]["type"]
         return event_handler(event_type, slack_event)
     return make_response("슬랙 요청에 이벤트가 없습니다.", 404, {"X-Slack-No-Retry": 1})
-'''
+
 
 
 
