@@ -15,3 +15,4 @@ slacker==0.13.0
 soupsieve==1.9.5
 urllib3==1.25.7
 Werkzeug==0.16.0
+schedule==0.6.0

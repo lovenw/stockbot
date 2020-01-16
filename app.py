@@ -4,6 +4,8 @@ from flask import Flask, request, make_response, jsonify
 import requests
 from bs4 import BeautifulSoup
 import re
+import schedule 
+import time 
 
 tokenf = 'xoxb-891410806117-888411335875-'
 tokenb = '2wHNq3Mjh1IBF5IUiiUWwZ7c'
@@ -18,7 +20,6 @@ name = ''
 price = ''
 testtext = ''
 user = ''
-
 slack = Slacker(slack_token)
 
 
@@ -42,16 +43,17 @@ def stock_price(std) :
 
     return price
 
-'''
-print('hello')
 
-print(stock_price("AMD"))
+def time_stock1:
+  slack.chat.post_message(random, "Samsung"+" : "+stock_price(005930.KS))
+  return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
 
-test = stock_price("TSLA")
+def time_stock2:
+  slack.chat.post_message(random, "AMD"+" : "+stock_price(AMD))
+  return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
 
-print(test)
 
-'''
+
 
 def get_answer(testtext):
 
@@ -80,7 +82,6 @@ def event_handler(event_type, slack_event):
 
 
 
-
 @app.route("/slack", methods=["GET", "POST"])
 
 def hears():
@@ -93,6 +94,15 @@ def hears():
         return event_handler(event_type, slack_event)
     return make_response("슬랙 요청에 이벤트가 없습니다.", 404, {"X-Slack-No-Retry": 1})
 
+
+schedule.every().thursday.at("20:50").do(time_stock2)
+schedule.every().thursday.at("21:00").do(time_stock1)
+schedule.every().frisday.at("06:20").do(time_stock2) 
+
+
+while True: 
+    schedule.run_pending() 
+    time.sleep(1)
 
 
 
