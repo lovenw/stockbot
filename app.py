@@ -109,6 +109,7 @@ def respond():
     # Now the user entered a valid name
     else:
         response["MESSAGE"] = f"{name} price : {price}"
+        slack.chat.post_message('#random', 'hello')
 
     # Return the response in json format
     return jsonify(response)
